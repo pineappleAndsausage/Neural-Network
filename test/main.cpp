@@ -10,8 +10,8 @@ int main()
 {	
 	
 
-	//test_xor();
-	test_multilayer();
+	test_xor();
+	//test_multilayer();
 
 	getchar();
 	return 0;
@@ -89,7 +89,7 @@ void test_xor()
 		af::MultiLayerPerceptron nn;
 		std::vector<int> n_layers;
 		n_layers.push_back(5);		
-		nn.init(2,n_layers,1,100000,0.2,1);
+		nn.init(2,n_layers,1,100000,0.2,1);		
 		std::vector<std::vector<double>> output1;
 		std::vector<double> temp1, temp2;		
 		temp1.push_back(0); temp2.push_back(1);			

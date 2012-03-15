@@ -2,6 +2,13 @@
 #include <vector>
 namespace af
 {
+	
+
+typedef std::vector<double> Input;
+typedef std::vector<double> Output;
+
+using namespace std;
+
 class Neuron
 {
 public:

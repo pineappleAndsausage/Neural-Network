@@ -4,6 +4,7 @@
 #include "SinglePerceptron.h"
 namespace af
 {
+
 class LayerPerceptron
 {
 public:
@@ -15,19 +16,21 @@ protected:
 	double m_learning_rate;	
 	int m_loop_cnt;	
 
-	std::vector<af::SinglePerceptron> m_layer;
+	vector<SinglePerceptron> m_layer;
 	
-	std::vector<double> feedforward(const std::vector<double> &input);
-	std::vector<double> backpropagate(const std::vector<double> &input);	
-	void update(const std::vector<double> &diff, const std::vector<double> &actual_output, const std::vector<double> &input);
+	int get_weight_size() { return m_layer.size() > 0 ? m_layer[0].get_weight_size() : 0; }
+	Output feedforward(const Input &input);
+	Input backpropagate(const Output &input);	
+	void update(const Output &diff, const Output &actual_output, const Input &input);
 
 public:
 	LayerPerceptron(void);
 	virtual ~LayerPerceptron(void);
+	//n_input : # of input, n_loop : # of loop
 	//func_type 1 : sigmoid function , 2 : linear function
 	void init(int n_input, int n_output, int n_loop = 1, double learning_rate = 0.1, int func_type = 1);	
-	void learning(const std::vector<std::vector<double>> &input, const std::vector<std::vector<double>> &output);
-	std::vector<double> run(const std::vector<double> &input);
+	void learning(const vector<Input> &input_set, const vector<Output> &output_set);
+	Output run(const Input &input);
 
 
 };

@@ -1,6 +1,8 @@
 #include "SinglePerceptron.h"
 #include <iostream>
 
+using namespace std;
+
 af::SinglePerceptron::SinglePerceptron(void) : m_init(false)
 {
 	
@@ -28,7 +30,7 @@ void af::SinglePerceptron::init(int n_input, int n_loop, double learning_rate, i
 	m_bias_unit = gaussianRandom();
 }
 
-void af::SinglePerceptron::delta_rule(double diff, double output, const std::vector<double> &input)
+void af::SinglePerceptron::delta_rule(double diff, double output, const Input &input)
 {	
 	//update weights
 	for(int i = 0; i < (int)input.size(); i++)
@@ -43,7 +45,7 @@ void af::SinglePerceptron::delta_rule(double diff, double output, const std::vec
 	m_bias_unit += m_learning_rate * diff;
 }
 
-double af::SinglePerceptron::run(const std::vector<double> &input)
+double af::SinglePerceptron::run(const Input &input)
 {
 	if(!m_init)
 	{
@@ -53,7 +55,7 @@ double af::SinglePerceptron::run(const std::vector<double> &input)
 	return calc(input,m_weights);	
 }
 
-void af::SinglePerceptron::learning(const std::vector<std::vector<double>> &input, const std::vector<double> &output)
+void af::SinglePerceptron::learning(const vector<Input> &input_set, const vector<double> &output_set)
 {
 	if(!m_init)
 	{
@@ -63,20 +65,20 @@ void af::SinglePerceptron::learning(const std::vector<std::vector<double>> &inpu
 	
 	//training
 	for(int k = 0; k < m_loop_cnt; k++)
-	for(int i = 0; i < (int)input.size(); i++)
+	for(int i = 0; i < (int)input_set.size(); i++)
 	{
-		double actual_output = run(input[i]);				
-		update(output[i]-actual_output,actual_output, input[i]);
+		double actual_output = run(input_set[i]);				
+		update(output_set[i]-actual_output,actual_output, input_set[i]);
 	}
 }
-std::vector<double> af::SinglePerceptron::backpropagate(double input)
+af::Input af::SinglePerceptron::backpropagate(double input)
 {
 	std::vector<double> result;
 	for(int i = 0; i < (int) m_weights.size(); i++)
 		result.push_back(m_weights[i]*input);
 	return result; 
 }
-double af::SinglePerceptron::calc(const std::vector<double> &input, const std::vector<double> &weight)
+double af::SinglePerceptron::calc(const Input &input, const std::vector<double> &weight)
 {	
 	double sum = 0.0;
 	for(int i = 0; i < (int)input.size(); i++)
@@ -90,7 +92,7 @@ double af::SinglePerceptron::calc(const std::vector<double> &input, const std::v
 		return sum;	
 }
 
-void af::SinglePerceptron::update(double diff, double output, const std::vector<double> &input)
+void af::SinglePerceptron::update(double diff, double output, const Input &input)
 {
 	delta_rule(diff,output, input);
 }

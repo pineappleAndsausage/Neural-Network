@@ -5,6 +5,7 @@
 
 namespace af
 {
+
 class MultiLayerPerceptron 
 {	
 protected:
@@ -12,20 +13,22 @@ protected:
 	double m_learning_rate;	
 	int m_loop_cnt;
 
-	std::vector<LayerPerceptron> m_layers;
+	vector<LayerPerceptron> m_layers;
 
 protected:	
 
-	void update(const std::vector<double> &desired_ouput, const std::vector<std::vector<double>> &actual_output, const std::vector<double> &input);
-	std::vector<std::vector<double>> feedforward(const std::vector<double> &input);
+	//actual_output_set : output at each layer
+	void update(const Output &desired_ouput, const vector<Output> &actual_output_set, const Input &input);
+	vector<Output> feedforward(const Input &input);
 	
 public:
 	MultiLayerPerceptron(void);
 	virtual ~MultiLayerPerceptron(void);
-	//func_type 1 : sigmoid function for output layer, 2 : linear function for output layer
-	void init(int n_input, const std::vector<int> &layer,  int n_output, int n_loop = 1, double learning_rate = 0.1, int func_type = 1);	
-	void learning(const std::vector<std::vector<double>> &input, const std::vector<std::vector<double>> &output);
-	std::vector<double> run(const std::vector<double> &input);
+	/*n_input : # of input, n_layers : # of each layer, n_loop : # of loop, 
+	func_type 1 : sigmoid function for output layer, 2 : linear function for output layer*/
+	void init(int n_input, const std::vector<int> &n_layers,  int n_output, int n_loop = 1, double learning_rate = 0.1, int func_type = 1);	
+	void learning(const vector<Input> &input_set, const vector<Output> &output_set);
+	Output run(const Input &input);
 };
 }
 

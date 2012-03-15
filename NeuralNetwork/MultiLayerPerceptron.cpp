@@ -1,6 +1,8 @@
 #include "MultiLayerPerceptron.h"
 #include <iostream>
 
+using namespace std;
+
 af::MultiLayerPerceptron::MultiLayerPerceptron(void) : m_init(false)
 {
 }
@@ -36,57 +38,57 @@ void af::MultiLayerPerceptron::init(int n_input, const std::vector<int> &n_layer
 	}
 }
 
-void af::MultiLayerPerceptron::learning(const std::vector<std::vector<double>> &input, const std::vector<std::vector<double>> &output)
+void af::MultiLayerPerceptron::learning(const vector<Input> &input_set, const vector<Output> &output_set)
 {
 	if(!m_init)
 	{
-		std::cout << "Has not been initialize" << std::endl;
+		cout << "Has not been initialize" << endl;
 		return;
 	}
 	
 	//training	
 	for(int k = 0; k < m_loop_cnt; k++)
-	for(int i = 0; i < (int)input.size(); i++)
+	for(int i = 0; i < (int)input_set.size(); i++)
 	{
 		//feedforward		
-		std::vector<std::vector<double>> actual_outputs = feedforward(input[i]);
+		vector<Output> actual_outputs = feedforward(input_set[i]);
 
 		//backpropagation and update
-		update(output[i],actual_outputs,input[i]);		
+		update(output_set[i],actual_outputs,input_set[i]);		
 	}
 }
-std::vector<std::vector<double>> af::MultiLayerPerceptron::feedforward(const std::vector<double> &input)
+af::vector<af::Output> af::MultiLayerPerceptron::feedforward(const Input &input)
 {	
-	std::vector<double> inner_input(input.begin(),input.end());
-	std::vector<std::vector<double>> inner_output;
-	inner_output.push_back(inner_input);
+	Input inner_input(input.begin(),input.end());
+	vector<Output> inner_output_set;
+	inner_output_set.push_back(inner_input);
 	for(int i = 0; i < (int)m_layers.size(); i++)
 	{
 		inner_input = m_layers[i].feedforward(inner_input);
-		inner_output.push_back(inner_input);
+		inner_output_set.push_back(inner_input);
 	}
-	return inner_output;
+	return inner_output_set;
 }
 
-void af::MultiLayerPerceptron::update(const std::vector<double> &desired_output, const std::vector<std::vector<double>> &actual_output, const std::vector<double> &input)
+void af::MultiLayerPerceptron::update(const Output &desired_output, const vector<Output> &actual_output_set, const Input &input)
 {
-	std::vector<double> error_signal(desired_output.size());
-	int n = actual_output.size() - 1;
+	Output error_signal(desired_output.size());
+	int n = actual_output_set.size() - 1;
 	for(int i = 0; i < (int)error_signal.size(); i++)
 	{
-		error_signal[i] = desired_output[i] - actual_output[n][i];
+		error_signal[i] = desired_output[i] - actual_output_set[n][i];
 	}
 	
 	for(int i = (int)m_layers.size() - 1; i >= 0; i--)
 	{		
-		std::vector<double> back =  m_layers[i].backpropagate(error_signal);
-		m_layers[i].update(error_signal,actual_output[i+1],actual_output[i]);
+		Input back =  m_layers[i].backpropagate(error_signal);
+		m_layers[i].update(error_signal,actual_output_set[i+1],actual_output_set[i]);
 		error_signal = back;		
 	}
 }
 
-std::vector<double> af::MultiLayerPerceptron::run(const std::vector<double> &input)
+af::Output af::MultiLayerPerceptron::run(const Input &input)
 {
-	std::vector<std::vector<double>> result = feedforward(input);
+	vector<Output> result = feedforward(input);
 	return result[result.size() - 1];
 }
