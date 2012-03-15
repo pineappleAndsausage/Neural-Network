@@ -60,11 +60,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="LayerPerceptron.h" />
+    <ClInclude Include="MultiLayerPerceptron.h" />
     <ClInclude Include="NeuralNetwork.h" />
+    <ClInclude Include="Neuron.h" />
     <ClInclude Include="SinglePerceptron.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="LayerPerceptron.cpp" />
+    <ClCompile Include="MultiLayerPerceptron.cpp" />
     <ClCompile Include="NeuralNetwork.cpp" />
+    <ClCompile Include="Neuron.cpp" />
     <ClCompile Include="SinglePerceptron.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
