@@ -1,8 +1,9 @@
 #pragma once
 #include <vector>
-#include "SinglePerceptron.h"
-#include "LayerPerceptron.h"
+
 #include "MultiLayerPerceptron.h"
+#include "LayerPerceptron.h"
+#include "SinglePerceptron.h"
 
 namespace af
 {

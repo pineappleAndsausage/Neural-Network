@@ -2,7 +2,7 @@
 #include <fstream>
 #include <vector>
 #include "../NeuralNetwork/NeuralNetwork.h"
-
+using namespace af;
 void test_xor();
 void test_multilayer();
 
@@ -34,16 +34,16 @@ void test_multilayer()
 	double scale = 100.0;
 	for(int i = 0; i < n; i++)
 		output[i][0] /= scale;
-	af::MultiLayerPerceptron nn;
+	/*af::MultiLayerPerceptron<af::Sigmoid> nn;
 	std::vector<int> n_layers;
 	n_layers.push_back(20);
 	n_layers.push_back(5);
-	//n_layers.push_back(3);
-	nn.init(3,n_layers,1,1000,0.5,1);
+	
+	nn.init(3,n_layers,1,1000,0.5);
 	nn.learning(input,output);
 	for(int i = 0; i < (int)input.size(); i++)
 		std::cout << nn.run(input[i])[0] * scale - output[i][0] * scale << std::endl;
-
+*/
 }
 void test_xor()
 {
@@ -61,18 +61,19 @@ void test_xor()
 
 	output[0] = 0; output[1] = 1; output[2] = 1; output[3] = 1;
 
-	if(false)
+	//if(false)
 	{
-		af::SinglePerceptron nn;
-		nn.init(2,100000);
+		af::SinglePerceptron<Sigmoid> nn;
+		
+		/*nn.init(2,100000,0.1);
 		nn.learning(input,output);
 		std::cout << "single perceptron" << std::endl;
 		for(int i = 0; i < 4; i++)
-			std::cout << input[i][0] << " " << input[i][1] << " " << nn.run(input[i]) << std::endl;
+			std::cout << input[i][0] << " " << input[i][1] << " " << nn.run(input[i]) << std::endl;*/
 	}
-	if(false)
+	/*if(false)
 	{
-		af::LayerPerceptron nn;
+		af::LayerPerceptron<Sigmoid> nn;
 		nn.init(2,1,10000);
 		std::vector<std::vector<double>> output1;
 		std::vector<double> temp1;
@@ -84,12 +85,12 @@ void test_xor()
 		for(int i = 0; i < 4; i++)
 			std::cout << input[i][0] << " " << input[i][1] << " " <<nn.run(input[i])[0] << std::endl;
 	}
-	//if(false)
+	if(false)
 	{
-		af::MultiLayerPerceptron nn;
+		af::MultiLayerPerceptron<Sigmoid> nn;
 		std::vector<int> n_layers;
 		n_layers.push_back(5);		
-		nn.init(2,n_layers,1,100000,0.2,1);		
+		nn.init(2,n_layers,1,1000,0.2);		
 		std::vector<std::vector<double>> output1;
 		std::vector<double> temp1, temp2;		
 		temp1.push_back(0); temp2.push_back(1);			
@@ -98,6 +99,6 @@ void test_xor()
 		std::cout << "multi layer perceptron" << std::endl;
 		for(int i = 0; i < 4; i++)
 			std::cout << input[i][0] << " " << input[i][1] << " " << nn.run(input[i])[0] << std::endl;
-	}
+	}*/
 }
 

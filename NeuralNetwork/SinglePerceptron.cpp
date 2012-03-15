@@ -2,24 +2,25 @@
 #include <iostream>
 
 using namespace std;
-
-af::SinglePerceptron::SinglePerceptron(void) : m_init(false)
+template<class ActivationFunction>
+af::SinglePerceptron<ActivationFunction>::SinglePerceptron(void) :  m_init(false)
 {
 	
 }
 
-
-af::SinglePerceptron::~SinglePerceptron(void)
+template<class ActivationFunction>
+af::SinglePerceptron<ActivationFunction>::~SinglePerceptron(void)
 {
 }
 
 //func_type = 1 : sigmoid, 2 : linear
-void af::SinglePerceptron::init(int n_input, int n_loop, double learning_rate, int func_type)
+template<class ActivationFunction>
+void af::SinglePerceptron<ActivationFunction>::init(int n_input, int n_loop, double learning_rate)
 {	
 	m_init = true;
 	m_loop_cnt = n_loop;
 	m_learning_rate = learning_rate;
-	m_func_type = func_type;
+	m_func = func;
 
 	//setWeight
 	m_weights.resize(n_input);
@@ -29,23 +30,18 @@ void af::SinglePerceptron::init(int n_input, int n_loop, double learning_rate, i
 	}
 	m_bias_unit = gaussianRandom();
 }
-
-void af::SinglePerceptron::delta_rule(double diff, double output, const Input &input)
+template<class ActivationFunction>
+void af::SinglePerceptron<ActivationFunction>::delta_rule(double diff, double output, const Input &input)
 {	
 	//update weights
 	for(int i = 0; i < (int)input.size(); i++)
-	{		
-		// w' = w + learning_rate * error_signal * dSigmoid(e) * input[i];
-		// output = sigmoid(e), dSigmoid = output * ( 1- output);		
-		if(m_func_type == 1)
-			m_weights[i] += m_learning_rate * diff * (output) * (1 - output) * input[i];
-		else
-			m_weights[i] += m_learning_rate * diff * input[i];
+	{	
+		m_weights[i] +=  m_learning_rate * m_func(diff,input[i],output);
 	}
 	m_bias_unit += m_learning_rate * diff;
 }
-
-double af::SinglePerceptron::run(const Input &input)
+template<class ActivationFunction>
+double af::SinglePerceptron<ActivationFunction>::run(const Input &input)
 {
 	if(!m_init)
 	{
@@ -54,8 +50,8 @@ double af::SinglePerceptron::run(const Input &input)
 	}
 	return calc(input,m_weights);	
 }
-
-void af::SinglePerceptron::learning(const vector<Input> &input_set, const vector<double> &output_set)
+template<class ActivationFunction>
+void af::SinglePerceptron<ActivationFunction>::learning(const vector<Input> &input_set, const vector<double> &output_set)
 {
 	if(!m_init)
 	{
@@ -71,14 +67,16 @@ void af::SinglePerceptron::learning(const vector<Input> &input_set, const vector
 		update(output_set[i]-actual_output,actual_output, input_set[i]);
 	}
 }
-af::Input af::SinglePerceptron::backpropagate(double input)
+template<class ActivationFunction>
+af::Input af::SinglePerceptron<ActivationFunction>::backpropagate(double input)
 {
 	std::vector<double> result;
 	for(int i = 0; i < (int) m_weights.size(); i++)
 		result.push_back(m_weights[i]*input);
 	return result; 
 }
-double af::SinglePerceptron::calc(const Input &input, const std::vector<double> &weight)
+template<class ActivationFunction>
+double af::SinglePerceptron<ActivationFunction>::calc(const Input &input, const std::vector<double> &weight)
 {	
 	double sum = 0.0;
 	for(int i = 0; i < (int)input.size(); i++)
@@ -86,13 +84,10 @@ double af::SinglePerceptron::calc(const Input &input, const std::vector<double> 
 		sum += input[i] * m_weights[i];
 	}
 	sum += m_bias_unit;
-	if(m_func_type == 1)
-		return sigmoid(sum);	
-	else
-		return sum;	
+	return m_func(sum);
 }
-
-void af::SinglePerceptron::update(double diff, double output, const Input &input)
+template<class ActivationFunction>
+void af::SinglePerceptron<ActivationFunction>::update(double diff, double output, const Input &input)
 {
 	delta_rule(diff,output, input);
 }

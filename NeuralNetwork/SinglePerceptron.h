@@ -5,19 +5,20 @@
 
 namespace af
 {
-	
+template<class ActivationFunction>
 class SinglePerceptron : public Neuron
 {
 public:
+	template<class ActivationFunction>
 	friend class LayerPerceptron;
 
 protected:
+	ActivationFunction m_func;
 	bool m_init;
 	vector<double> m_weights;	
 	double m_bias_unit;
 	double m_learning_rate;	
-	int m_loop_cnt;
-	int m_func_type;
+	int m_loop_cnt;	
 
 protected:
 	int get_weight_size() { return m_weights.size(); }
@@ -31,7 +32,7 @@ public:
 	virtual ~SinglePerceptron();
 	//n_input : # of input, n_loop : # of loop
 	//func_type 1 : sigmoid function , 2 : linear function
-	void init(int n_input, int n_loop = 1, double learning_rate = 0.1, int func_type = 1);	
+	void init(int n_input, int n_loop = 1, double learning_rate = 0.1);	
 	void learning(const vector<Input> &input_set, const vector<double> &output_set);	
 	double run(const Input &input);
 	
