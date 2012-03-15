@@ -11,12 +11,13 @@ af::SinglePerceptron::~SinglePerceptron(void)
 {
 }
 
-
-void af::SinglePerceptron::init(int n_input, int n_loop, double learning_rate)
+//func_type = 1 : sigmoid, 2 : linear
+void af::SinglePerceptron::init(int n_input, int n_loop, double learning_rate, int func_type)
 {	
 	m_init = true;
 	m_loop_cnt = n_loop;
 	m_learning_rate = learning_rate;
+	m_func_type = func_type;
 
 	//setWeight
 	m_weights.resize(n_input);
@@ -33,8 +34,11 @@ void af::SinglePerceptron::delta_rule(double diff, double output, const std::vec
 	for(int i = 0; i < (int)input.size(); i++)
 	{		
 		// w' = w + learning_rate * error_signal * dSigmoid(e) * input[i];
-		// output = sigmoid(e), dSigmoid = output * ( 1- output);
-		m_weights[i] += m_learning_rate * diff * (output) * (1 - output) * input[i];
+		// output = sigmoid(e), dSigmoid = output * ( 1- output);		
+		if(m_func_type == 1)
+			m_weights[i] += m_learning_rate * diff * (output) * (1 - output) * input[i];
+		else
+			m_weights[i] += m_learning_rate * diff * input[i];
 	}
 	m_bias_unit += m_learning_rate * diff;
 }
@@ -80,13 +84,12 @@ double af::SinglePerceptron::calc(const std::vector<double> &input, const std::v
 		sum += input[i] * m_weights[i];
 	}
 	sum += m_bias_unit;
-	return sigmoid(sum);	
+	if(m_func_type == 1)
+		return sigmoid(sum);	
+	else
+		return sum;	
 }
 
-void af::SinglePerceptron::update2(double desired_ouput, double actual_output, const std::vector<double> &input)
-{
-	update(desired_ouput - actual_output,actual_output,input);
-}
 void af::SinglePerceptron::update(double diff, double output, const std::vector<double> &input)
 {
 	delta_rule(diff,output, input);

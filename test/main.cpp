@@ -6,14 +6,15 @@
 void test_xor();
 void test_multilayer();
 
-void main()
+int main()
 {	
 	
 
-	test_xor();
-	//test_multilayer();
+	//test_xor();
+	test_multilayer();
 
 	getchar();
+	return 0;
 }
 
 void test_multilayer()
@@ -30,13 +31,18 @@ void test_multilayer()
 		int temp;
 		f >> temp >> input[i][0] >> input[i][1] >> input[i][2] >> output[i][0];
 	}
+	double scale = 100.0;
+	for(int i = 0; i < n; i++)
+		output[i][0] /= scale;
 	af::MultiLayerPerceptron nn;
 	std::vector<int> n_layers;
 	n_layers.push_back(20);
-	nn.init(3,n_layers,1,100);
+	n_layers.push_back(5);
+	//n_layers.push_back(3);
+	nn.init(3,n_layers,1,1000,0.5,1);
 	nn.learning(input,output);
 	for(int i = 0; i < (int)input.size(); i++)
-		std::cout << nn.run(input[i])[0] - output[i][0] << std::endl;
+		std::cout << nn.run(input[i])[0] * scale - output[i][0] * scale << std::endl;
 
 }
 void test_xor()
@@ -53,7 +59,7 @@ void test_xor()
 	input[2][0] = 1; input[2][1] = 0;
 	input[3][0] = 1; input[3][1] = 1;
 
-	output[0] = 0; output[1] = 1; output[2] = 1; output[3] = 0;
+	output[0] = 0; output[1] = 1; output[2] = 1; output[3] = 1;
 
 	if(false)
 	{
@@ -82,8 +88,8 @@ void test_xor()
 	{
 		af::MultiLayerPerceptron nn;
 		std::vector<int> n_layers;
-		n_layers.push_back(3);		
-		nn.init(2,n_layers,1,100000);
+		n_layers.push_back(5);		
+		nn.init(2,n_layers,1,100000,0.2,1);
 		std::vector<std::vector<double>> output1;
 		std::vector<double> temp1, temp2;		
 		temp1.push_back(0); temp2.push_back(1);			

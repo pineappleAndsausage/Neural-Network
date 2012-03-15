@@ -9,17 +9,17 @@ af::LayerPerceptron::LayerPerceptron(void) : m_init(false)
 af::LayerPerceptron::~LayerPerceptron(void)
 {
 }
-void af::LayerPerceptron::init(int n_input, int n_output, int n_loop, double learning_rate)
+void af::LayerPerceptron::init(int n_input, int n_output, int n_loop, double learning_rate, int func_type)
 {
 	m_init = true;
 	m_loop_cnt = n_loop;
 	m_learning_rate = learning_rate;
-		
+	
 	m_layer.resize(n_output);
 
 	for(int i = 0; i < (int)m_layer.size(); i++)
 	{		
-		m_layer[i].init(n_input,1,learning_rate);		
+		m_layer[i].init(n_input,1,learning_rate,func_type);		
 	}
 }
 
@@ -73,12 +73,6 @@ std::vector<double> af::LayerPerceptron::backpropagate(const std::vector<double>
 		}
 	}
 	return actual_output;
-}
-
-void af::LayerPerceptron::update2(const std::vector<double> &desired_ouput, const std::vector<double> &actual_output, const std::vector<double> &input)
-{
-	for(int i = 0; i < (int)desired_ouput.size(); i++)
-		m_layer[i].update2(desired_ouput[i],actual_output[i],input);
 }
 
 void af::LayerPerceptron::update(const std::vector<double> &diff,const std::vector<double> &output,  const std::vector<double> &input)

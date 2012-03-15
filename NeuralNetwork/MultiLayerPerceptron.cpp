@@ -10,7 +10,8 @@ af::MultiLayerPerceptron::~MultiLayerPerceptron(void)
 {
 }
 
-void af::MultiLayerPerceptron::init(int n_input, const std::vector<int> &n_layers, int n_output, int n_loop, double learning_rate)
+//func_type of output layer 
+void af::MultiLayerPerceptron::init(int n_input, const std::vector<int> &n_layers, int n_output, int n_loop, double learning_rate, int func_type)
 {
 	m_init = true;
 	m_loop_cnt = n_loop;
@@ -28,7 +29,10 @@ void af::MultiLayerPerceptron::init(int n_input, const std::vector<int> &n_layer
 	m_layers.resize(layers.size() - 1);
 	for(int i = 0; i < (int)layers.size() - 1; i++)
 	{	
-		m_layers[i].init(layers[i],layers[i+1],1,learning_rate);		
+		if(i == layers.size() - 2)
+			m_layers[i].init(layers[i],layers[i+1],1,learning_rate,func_type);		
+		else
+			m_layers[i].init(layers[i],layers[i+1],1,learning_rate);		
 	}
 }
 
