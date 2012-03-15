@@ -4,11 +4,10 @@
 #include "SinglePerceptron.h"
 namespace af
 {
-template<class ActivationFunction>
-class LayerPerceptron 
+
+class LayerPerceptron
 {
 public:
-	template<class ActivationFunction>
 	friend class MultiLayerPerceptron;
 
 protected:
@@ -17,7 +16,7 @@ protected:
 	double m_learning_rate;	
 	int m_loop_cnt;	
 
-	vector<SinglePerceptron<ActivationFunction>> m_layer;
+	vector<SinglePerceptron> m_layer;
 	
 	int get_weight_size() { return m_layer.size() > 0 ? m_layer[0].get_weight_size() : 0; }
 	Output feedforward(const Input &input);
@@ -29,7 +28,7 @@ public:
 	virtual ~LayerPerceptron(void);
 	//n_input : # of input, n_loop : # of loop
 	//func_type 1 : sigmoid function , 2 : linear function
-	void init(int n_input, int n_output, int n_loop = 1, double learning_rate = 0.1);	
+	void init(int n_input, int n_output, int n_loop = 1, double learning_rate = 0.1, ActivationFunction *func = new Sigmoid());	
 	void learning(const vector<Input> &input_set, const vector<Output> &output_set);
 	Output run(const Input &input);
 

@@ -5,7 +5,7 @@
 
 namespace af
 {
-template<class ActivationFunction>
+
 class MultiLayerPerceptron 
 {	
 protected:
@@ -13,7 +13,7 @@ protected:
 	double m_learning_rate;	
 	int m_loop_cnt;
 
-	vector<LayerPerceptron<ActivationFunction>> m_layers;
+	vector<LayerPerceptron> m_layers;
 
 protected:	
 
@@ -26,7 +26,7 @@ public:
 	virtual ~MultiLayerPerceptron(void);
 	/*n_input : # of input, n_layers : # of each layer, n_loop : # of loop, 
 	func_type 1 : sigmoid function for output layer, 2 : linear function for output layer*/
-	void init(int n_input, const std::vector<int> &n_layers,  int n_output, int n_loop = 1, double learning_rate = 0.1);	
+	void init(int n_input, const std::vector<int> &n_layers,  int n_output, int n_loop = 1, double learning_rate = 0.1, ActivationFunction *func = new Sigmoid());	
 	void learning(const vector<Input> &input_set, const vector<Output> &output_set);
 	Output run(const Input &input);
 };

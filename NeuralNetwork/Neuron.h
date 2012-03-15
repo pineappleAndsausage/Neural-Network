@@ -9,7 +9,15 @@ typedef std::vector<double> Output;
 
 using namespace std;
 
-class Sigmoid
+class ActivationFunction
+{
+
+public:	
+	virtual double operator()(double h) const = 0;
+	virtual double operator()(double diff, double input, double output) const = 0;
+};
+
+class Sigmoid: public ActivationFunction
 {
 public:
 	Sigmoid() {};
@@ -21,7 +29,7 @@ public:
 		return diff * (output) * (1 - output) * input;
 	};
 };
-class LinearFunction
+class LinearFunction: public ActivationFunction
 {
 public:
 	LinearFunction() {};

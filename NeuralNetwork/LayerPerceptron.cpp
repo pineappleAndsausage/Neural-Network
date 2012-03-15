@@ -2,17 +2,16 @@
 #include <iostream>
 
 using namespace std;
-template<class ActivationFunction>
-af::LayerPerceptron<ActivationFunction>::LayerPerceptron(void) : m_init(false)
+
+af::LayerPerceptron::LayerPerceptron(void) : m_init(false)
 {
 }
 
-template<class ActivationFunction>
-af::LayerPerceptron<ActivationFunction>::~LayerPerceptron(void)
+
+af::LayerPerceptron::~LayerPerceptron(void)
 {
 }
-template<class ActivationFunction>
-void af::LayerPerceptron<ActivationFunction>::init(int n_input, int n_output, int n_loop, double learning_rate)
+void af::LayerPerceptron::init(int n_input, int n_output, int n_loop, double learning_rate, ActivationFunction *func)
 {
 	m_init = true;
 	m_loop_cnt = n_loop;
@@ -22,11 +21,11 @@ void af::LayerPerceptron<ActivationFunction>::init(int n_input, int n_output, in
 
 	for(int i = 0; i < (int)m_layer.size(); i++)
 	{		
-		m_layer[i].init(n_input,1,learning_rate);		
+		m_layer[i].init(n_input,1,learning_rate,func);		
 	}
 }
-template<class ActivationFunction>
-void af::LayerPerceptron<ActivationFunction>::learning(const vector<Input> &input_set, const vector<Output> &output_set)
+
+void af::LayerPerceptron::learning(const vector<Input> &input_set, const vector<Output> &output_set)
 {
 	if(!m_init)
 	{
@@ -47,8 +46,8 @@ void af::LayerPerceptron<ActivationFunction>::learning(const vector<Input> &inpu
 	}
 
 }
-template<class ActivationFunction>
-af::Output af::LayerPerceptron<ActivationFunction>::feedforward(const Input &input)
+
+af::Output af::LayerPerceptron::feedforward(const Input &input)
 {
 	Output actual_output(m_layer.size());
 	
@@ -59,8 +58,8 @@ af::Output af::LayerPerceptron<ActivationFunction>::feedforward(const Input &inp
 	
 	return actual_output;
 }
-template<class ActivationFunction>
-af::Input af::LayerPerceptron<ActivationFunction>::backpropagate(const Output &input)
+
+af::Input af::LayerPerceptron::backpropagate(const Output &input)
 {	
 	Input actual_output(get_weight_size());	
 	for(int i = 0; i < (int)input.size(); i++)
@@ -77,14 +76,14 @@ af::Input af::LayerPerceptron<ActivationFunction>::backpropagate(const Output &i
 	}
 	return actual_output;
 }
-template<class ActivationFunction>
-void af::LayerPerceptron<ActivationFunction>::update(const Output &diff,const Output &output,  const Input &input)
+
+void af::LayerPerceptron::update(const Output &diff,const Output &output,  const Input &input)
 {
 	for(int i = 0; i < (int)diff.size(); i++)
 		m_layer[i].update(diff[i],output[i], input);
 }
-template<class ActivationFunction>
-af::Output af::LayerPerceptron<ActivationFunction>::run(const Input &input)
+
+af::Output af::LayerPerceptron::run(const Input &input)
 {
 	return feedforward(input);
 }

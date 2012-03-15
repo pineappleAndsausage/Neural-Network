@@ -2,19 +2,18 @@
 #include <iostream>
 
 using namespace std;
-template<class ActivationFunction>
-af::MultiLayerPerceptron<ActivationFunction>::MultiLayerPerceptron(void) : m_init(false)
+
+af::MultiLayerPerceptron::MultiLayerPerceptron(void) : m_init(false)
 {
 }
 
-template<class ActivationFunction>
-af::MultiLayerPerceptron<ActivationFunction>::~MultiLayerPerceptron(void)
+
+af::MultiLayerPerceptron::~MultiLayerPerceptron(void)
 {
 }
 
 //func_type of output layer 
-template<class ActivationFunction>
-void af::MultiLayerPerceptron<ActivationFunction>::init(int n_input, const std::vector<int> &n_layers, int n_output, int n_loop, double learning_rate)
+void af::MultiLayerPerceptron::init(int n_input, const std::vector<int> &n_layers, int n_output, int n_loop, double learning_rate, ActivationFunction *func)
 {
 	m_init = true;
 	m_loop_cnt = n_loop;
@@ -33,13 +32,13 @@ void af::MultiLayerPerceptron<ActivationFunction>::init(int n_input, const std::
 	for(int i = 0; i < (int)layers.size() - 1; i++)
 	{	
 		if(i == layers.size() - 2)
-			m_layers[i].init(layers[i],layers[i+1],1,learning_rate);		
+			m_layers[i].init(layers[i],layers[i+1],1,learning_rate,func);		
 		else
 			m_layers[i].init(layers[i],layers[i+1],1,learning_rate);		
 	}
 }
-template<class ActivationFunction>
-void af::MultiLayerPerceptron<ActivationFunction>::learning(const vector<Input> &input_set, const vector<Output> &output_set)
+
+void af::MultiLayerPerceptron::learning(const vector<Input> &input_set, const vector<Output> &output_set)
 {
 	if(!m_init)
 	{
@@ -58,8 +57,7 @@ void af::MultiLayerPerceptron<ActivationFunction>::learning(const vector<Input> 
 		update(output_set[i],actual_outputs,input_set[i]);		
 	}
 }
-template<class ActivationFunction>
-af::vector<af::Output> af::MultiLayerPerceptron<ActivationFunction>::feedforward(const Input &input)
+af::vector<af::Output> af::MultiLayerPerceptron::feedforward(const Input &input)
 {	
 	Input inner_input(input.begin(),input.end());
 	vector<Output> inner_output_set;
@@ -71,8 +69,8 @@ af::vector<af::Output> af::MultiLayerPerceptron<ActivationFunction>::feedforward
 	}
 	return inner_output_set;
 }
-template<class ActivationFunction>
-void af::MultiLayerPerceptron<ActivationFunction>::update(const Output &desired_output, const vector<Output> &actual_output_set, const Input &input)
+
+void af::MultiLayerPerceptron::update(const Output &desired_output, const vector<Output> &actual_output_set, const Input &input)
 {
 	Output error_signal(desired_output.size());
 	int n = actual_output_set.size() - 1;
@@ -88,9 +86,9 @@ void af::MultiLayerPerceptron<ActivationFunction>::update(const Output &desired_
 		error_signal = back;		
 	}
 }
-template<class ActivationFunction>
-af::Output af::MultiLayerPerceptron<ActivationFunction>::run(const Input &input)
-{<
+
+af::Output af::MultiLayerPerceptron::run(const Input &input)
+{
 	vector<Output> result = feedforward(input);
 	return result[result.size() - 1];
 }
