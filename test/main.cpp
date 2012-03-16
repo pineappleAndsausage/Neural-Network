@@ -19,7 +19,7 @@ int main()
 	{
 		std::cerr << err << std::endl;
 	}
-	getchar();
+	//getchar();
 	return 0;
 }
 
@@ -99,7 +99,7 @@ void test_xor()
 		std::vector<int> n_layers;
 		n_layers.push_back(5);		
 		std::tr1::shared_ptr<af::ActivationFunction> afunc(new af::Sigmoid());
-		nn.init(2,n_layers,1,afunc,1000,0.2);		
+		nn.init(2,n_layers,1,afunc,100000,0.2);		
 		std::vector<std::vector<double>> output1;
 		std::vector<double> temp1, temp2;		
 		temp1.push_back(0); temp2.push_back(1);			

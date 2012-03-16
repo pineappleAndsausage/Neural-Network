@@ -36,11 +36,12 @@ void af::SinglePerceptron::init(int n_input, shared_ptr<ActivationFunction> func
 void af::SinglePerceptron::delta_rule(double diff, double output, const Input &input)
 {	
 	//update weights
+	double temp = m_learning_rate * diff;
 	for(int i = 0; i < (int)input.size(); i++)
 	{	
-		m_weights[i] +=  m_learning_rate * (*m_func)(diff,input[i],output);
+		m_weights[i] +=  temp * (*m_func)(input[i],output);
 	}
-	m_bias_unit += m_learning_rate * diff;
+	m_bias_unit += temp;
 }
 
 double af::SinglePerceptron::run(const Input &input)

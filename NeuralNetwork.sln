@@ -1,12 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual C++ Express 2010
+# Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NeuralNetwork", "NeuralNetwork\NeuralNetwork.vcxproj", "{26EC523C-E026-4E0C-9FFD-72685808B8BB}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test\test.vcxproj", "{7AFD8D0C-A8F1-4EB3-ACF1-CA9143F3EB7C}"
 	ProjectSection(ProjectDependencies) = postProject
 		{26EC523C-E026-4E0C-9FFD-72685808B8BB} = {26EC523C-E026-4E0C-9FFD-72685808B8BB}
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DA9436CE-B2F0-4BAB-8DF5-36E0B840E8A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
