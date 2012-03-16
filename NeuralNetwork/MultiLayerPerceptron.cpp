@@ -13,7 +13,7 @@ af::MultiLayerPerceptron::~MultiLayerPerceptron(void)
 }
 
 //func_type of output layer 
-void af::MultiLayerPerceptron::init(int n_input, const std::vector<int> &n_layers, int n_output, int n_loop, double learning_rate, ActivationFunction *func)
+void af::MultiLayerPerceptron::init(int n_input, const std::vector<int> &n_layers, int n_output, shared_ptr<ActivationFunction> func, int n_loop, double learning_rate)
 {
 	m_init = true;
 	m_loop_cnt = n_loop;
@@ -29,12 +29,14 @@ void af::MultiLayerPerceptron::init(int n_input, const std::vector<int> &n_layer
 
 	//layer 0 : input, layer n-1 : output
 	m_layers.resize(layers.size() - 1);
+	shared_ptr<Sigmoid> sigmoid_func(new Sigmoid());
+	
 	for(int i = 0; i < (int)layers.size() - 1; i++)
 	{	
 		if(i == layers.size() - 2)
-			m_layers[i].init(layers[i],layers[i+1],1,learning_rate,func);		
+			m_layers[i].init(layers[i],layers[i+1],func,1,learning_rate);		
 		else
-			m_layers[i].init(layers[i],layers[i+1],1,learning_rate);		
+			m_layers[i].init(layers[i],layers[i+1],sigmoid_func, 1,learning_rate);		
 	}
 }
 

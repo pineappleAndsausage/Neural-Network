@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <memory>
 #include "../NeuralNetwork/NeuralNetwork.h"
 
 void test_xor();
@@ -39,7 +40,8 @@ void test_multilayer()
 	n_layers.push_back(20);
 	n_layers.push_back(5);
 	//n_layers.push_back(3);
-	nn.init(3,n_layers,1,1000,0.5);
+	std::tr1::shared_ptr<af::ActivationFunction> afunc(new af::Sigmoid());
+	nn.init(3,n_layers,1,afunc,1000,0.5);
 	nn.learning(input,output);
 	for(int i = 0; i < (int)input.size(); i++)
 		std::cout << nn.run(input[i])[0] * scale - output[i][0] * scale << std::endl;
@@ -64,8 +66,8 @@ void test_xor()
 	if(false)
 	{
 		af::SinglePerceptron nn;
-		
-		nn.init(2,100000,0.1,new af::Sigmoid());
+		std::tr1::shared_ptr<af::ActivationFunction> afunc(new af::Sigmoid());
+		nn.init(2,afunc,100000,0.1);
 		nn.learning(input,output);
 		std::cout << "single perceptron" << std::endl;
 		for(int i = 0; i < 4; i++)
@@ -74,7 +76,8 @@ void test_xor()
 	if(false)
 	{
 		af::LayerPerceptron nn;
-		nn.init(2,1,10000);
+		std::tr1::shared_ptr<af::ActivationFunction> afunc(new af::Sigmoid());
+		nn.init(2,1,afunc,10000,0.1);
 		std::vector<std::vector<double>> output1;
 		std::vector<double> temp1;
 		std::vector<double> temp2;
@@ -90,7 +93,8 @@ void test_xor()
 		af::MultiLayerPerceptron nn;
 		std::vector<int> n_layers;
 		n_layers.push_back(5);		
-		nn.init(2,n_layers,1,1000,0.2);		
+		std::tr1::shared_ptr<af::ActivationFunction> afunc(new af::Sigmoid());
+		nn.init(2,n_layers,1,afunc,1000,0.2);		
 		std::vector<std::vector<double>> output1;
 		std::vector<double> temp1, temp2;		
 		temp1.push_back(0); temp2.push_back(1);			

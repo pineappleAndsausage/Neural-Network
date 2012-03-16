@@ -14,7 +14,7 @@ af::SinglePerceptron::~SinglePerceptron(void)
 }
 
 //func_type = 1 : sigmoid, 2 : linear
-void af::SinglePerceptron::init(int n_input, int n_loop, double learning_rate, ActivationFunction *func)
+void af::SinglePerceptron::init(int n_input, shared_ptr<ActivationFunction> func, int n_loop, double learning_rate)
 {	
 	m_init = true;
 	m_loop_cnt = n_loop;

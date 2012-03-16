@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <iostream>
 namespace af
 {
 	
@@ -13,6 +14,7 @@ class ActivationFunction
 {
 
 public:	
+	
 	virtual double operator()(double h) const = 0;
 	virtual double operator()(double diff, double input, double output) const = 0;
 };
@@ -20,7 +22,7 @@ public:
 class Sigmoid: public ActivationFunction
 {
 public:
-	Sigmoid() {};
+	Sigmoid() {};	
 	double operator()(double h) const { return  1.0/ (1.0 + exp(-h));};
 	double operator()(double diff, double input, double output) const
 	{
@@ -32,7 +34,7 @@ public:
 class LinearFunction: public ActivationFunction
 {
 public:
-	LinearFunction() {};
+	LinearFunction() {};	
 	double operator()(double h) const { return  h;};
 	double operator()(double diff, double input, double output) const
 	{

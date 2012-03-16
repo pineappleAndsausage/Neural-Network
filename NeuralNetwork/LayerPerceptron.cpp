@@ -11,17 +11,15 @@ af::LayerPerceptron::LayerPerceptron(void) : m_init(false)
 af::LayerPerceptron::~LayerPerceptron(void)
 {
 }
-void af::LayerPerceptron::init(int n_input, int n_output, int n_loop, double learning_rate, ActivationFunction *func)
+void af::LayerPerceptron::init(int n_input, int n_output, shared_ptr<ActivationFunction> func, int n_loop, double learning_rate)
 {
 	m_init = true;
 	m_loop_cnt = n_loop;
-	m_learning_rate = learning_rate;
-	
-	m_layer.resize(n_output);
-
+	m_learning_rate = learning_rate;	
+	m_layer.resize(n_output);	
 	for(int i = 0; i < (int)m_layer.size(); i++)
 	{		
-		m_layer[i].init(n_input,1,learning_rate,func);		
+		m_layer[i].init(n_input,func,1,learning_rate);		
 	}
 }
 

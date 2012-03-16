@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <memory>
 #include "Neuron.h"
 
 
@@ -12,7 +13,7 @@ public:
 	friend class LayerPerceptron;
 
 protected:
-	ActivationFunction *m_func;
+	tr1::shared_ptr<ActivationFunction> m_func;
 	bool m_init;
 	vector<double> m_weights;	
 	double m_bias_unit;
@@ -31,7 +32,7 @@ public:
 	virtual ~SinglePerceptron();
 	//n_input : # of input, n_loop : # of loop
 	//func_type 1 : sigmoid function , 2 : linear function
-	void init(int n_input, int n_loop = 1, double learning_rate = 0.1, ActivationFunction *func = new Sigmoid());	
+	void init(int n_input,shared_ptr<ActivationFunction> func, int n_loop = 1, double learning_rate = 0.1);	
 	void learning(const vector<Input> &input_set, const vector<double> &output_set);	
 	double run(const Input &input);
 	

@@ -26,7 +26,7 @@ public:
 	virtual ~MultiLayerPerceptron(void);
 	/*n_input : # of input, n_layers : # of each layer, n_loop : # of loop, 
 	func_type 1 : sigmoid function for output layer, 2 : linear function for output layer*/
-	void init(int n_input, const std::vector<int> &n_layers,  int n_output, int n_loop = 1, double learning_rate = 0.1, ActivationFunction *func = new Sigmoid());	
+	void init(int n_input, const std::vector<int> &n_layers,  int n_output,shared_ptr<ActivationFunction> func, int n_loop = 1, double learning_rate = 0.1);	
 	void learning(const vector<Input> &input_set, const vector<Output> &output_set);
 	Output run(const Input &input);
 };
