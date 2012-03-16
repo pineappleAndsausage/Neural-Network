@@ -13,6 +13,8 @@ af::LayerPerceptron::~LayerPerceptron(void)
 }
 void af::LayerPerceptron::init(int n_input, int n_output, shared_ptr<ActivationFunction> func, int n_loop, double learning_rate)
 {
+	if(func == NULL) throw "Activation function is NULL";
+		
 	m_init = true;
 	m_loop_cnt = n_loop;
 	m_learning_rate = learning_rate;	
@@ -21,16 +23,13 @@ void af::LayerPerceptron::init(int n_input, int n_output, shared_ptr<ActivationF
 	{		
 		m_layer[i].init(n_input,func,1,learning_rate);		
 	}
+	
 }
 
 void af::LayerPerceptron::learning(const vector<Input> &input_set, const vector<Output> &output_set)
 {
-	if(!m_init)
-	{
-		cout << "Has not been initialize" << endl;
-		return;
-	}
-	
+	if(!m_init)	throw "Has not been initialize";
+		
 	//training
 	for(int k = 0; k < m_loop_cnt; k++)
 	for(int i = 0; i < (int)input_set.size(); i++)

@@ -15,6 +15,8 @@ af::MultiLayerPerceptron::~MultiLayerPerceptron(void)
 //func_type of output layer 
 void af::MultiLayerPerceptron::init(int n_input, const std::vector<int> &n_layers, int n_output, shared_ptr<ActivationFunction> func, int n_loop, double learning_rate)
 {
+	if(func == NULL) throw "Activation function is NULL";		
+
 	m_init = true;
 	m_loop_cnt = n_loop;
 	m_learning_rate = learning_rate;
@@ -38,15 +40,12 @@ void af::MultiLayerPerceptron::init(int n_input, const std::vector<int> &n_layer
 		else
 			m_layers[i].init(layers[i],layers[i+1],sigmoid_func, 1,learning_rate);		
 	}
+	
 }
 
 void af::MultiLayerPerceptron::learning(const vector<Input> &input_set, const vector<Output> &output_set)
 {
-	if(!m_init)
-	{
-		cout << "Has not been initialize" << endl;
-		return;
-	}
+	if(!m_init)	throw "Has not been initialize";
 	
 	//training	
 	for(int k = 0; k < m_loop_cnt; k++)

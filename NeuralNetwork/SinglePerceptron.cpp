@@ -16,11 +16,12 @@ af::SinglePerceptron::~SinglePerceptron(void)
 //func_type = 1 : sigmoid, 2 : linear
 void af::SinglePerceptron::init(int n_input, shared_ptr<ActivationFunction> func, int n_loop, double learning_rate)
 {	
+	if(func == NULL) throw "Activation function is NULL";
 	m_init = true;
 	m_loop_cnt = n_loop;
 	m_learning_rate = learning_rate;
 	m_func = func;
-
+	
 	//setWeight
 	m_weights.resize(n_input);
 	for(int i = 0; i < n_input; i++)
@@ -28,6 +29,8 @@ void af::SinglePerceptron::init(int n_input, shared_ptr<ActivationFunction> func
 		m_weights[i] = gaussianRandom();
 	}
 	m_bias_unit = gaussianRandom();
+
+	
 }
 
 void af::SinglePerceptron::delta_rule(double diff, double output, const Input &input)
@@ -42,21 +45,14 @@ void af::SinglePerceptron::delta_rule(double diff, double output, const Input &i
 
 double af::SinglePerceptron::run(const Input &input)
 {
-	if(!m_init)
-	{
-		std::cout << "Has not been initialize" << std::endl;
-		return -1;
-	}
+	if(!m_init) throw "Has not been initialize";
+		
 	return calc(input,m_weights);	
 }
 
 void af::SinglePerceptron::learning(const vector<Input> &input_set, const vector<double> &output_set)
 {
-	if(!m_init)
-	{
-		std::cout << "Has not been initialize" << std::endl;
-		return;
-	}
+	if(!m_init) throw "Has not been initialize";
 	
 	//training
 	for(int k = 0; k < m_loop_cnt; k++)

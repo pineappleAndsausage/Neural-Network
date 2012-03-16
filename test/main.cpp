@@ -10,10 +10,15 @@ void test_multilayer();
 int main()
 {	
 	
-
-	test_xor();
-	//test_multilayer();
-
+	try
+	{
+		test_xor();
+		//test_multilayer();
+	}
+	catch(const char* err)
+	{
+		std::cerr << err << std::endl;
+	}
 	getchar();
 	return 0;
 }
